@@ -38,7 +38,7 @@ end
   <%= stylesheet_link_tag 'foo', :media => 'handheld, tty' %>
 </head>
 <body>
-  <div class="title" style="color:red;">bar</div>
+  <div class="title" style="color:red">bar</div>
 </body>
 </html>
 
