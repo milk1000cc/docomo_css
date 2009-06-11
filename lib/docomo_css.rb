@@ -9,11 +9,11 @@ module DocomoCss
 
   module ClassMethods
     def docomo_filter
-      after_filter Filter.new
+      after_filter DocomoCssFilter.new
     end
   end
 
-  class Filter
+  class DocomoCssFilter
     def after(controller)
       content = controller.response.body
 
