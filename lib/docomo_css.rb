@@ -2,8 +2,15 @@ require 'hpricot'
 require 'tiny_css'
 
 module DocomoCss
-  def self.docomo_filter
-    after_filter Filter.new
+
+  def self.included(base)
+    base.extend ClassMethods
+  end
+
+  module ClassMethods
+    def docomo_filter
+      after_filter Filter.new
+    end
   end
 
   class Filter
