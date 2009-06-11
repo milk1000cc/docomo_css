@@ -1,8 +1,10 @@
 require 'test/unit'
+require 'rubygems'
+require 'action_controller'
+require File.join(File.dirname(__FILE__), '..', 'lib', 'docomo_css')
 
 class DocomoCssTest < Test::Unit::TestCase
-  # Replace this with your real tests.
-  def test_this_plugin
-    flunk
+  def test_dependencies
+    assert true
   end
 end
