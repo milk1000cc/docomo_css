@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
      "README.rdoc",
      "Rakefile",
      "VERSION",
+     "docomo_css.gemspec",
      "init.rb",
      "install.rb",
      "lib/docomo_css.rb",
