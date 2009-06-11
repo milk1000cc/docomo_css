@@ -1,0 +1,59 @@
+= DocomoCss
+
+docomo_css is a CSS in-liner.
+
+Most handsets for the Japanese cell-phone carrier DoCoMo cannot use external
+style sheets, such as 
+
+  <link rel="stylesheet" /> style css, only can use in-line CSS.
+
+Instead, every element must use its own style attribute, for example
+
+  <div style="font-size:x-small">
+
+docomo_css works around this by inlining all CSS automatically for you.
+
+== Install
+
+  sudo gem install milk1000cc-docomo_css --source=http://gems.github.com
+
+== Usage
+
+  # app/controllers/articles_controller.rb
+  class ArticlesController < ApplicationController
+    docomo_filter  # please add this
+    ...
+  end
+
+  # app/views/articles/index.html.erb
+  <html>
+  <head>
+    <%= stylesheet_link_tag 'foo', :media => 'handheld, tty' %>
+  </head>
+  <body>
+    <div class="title">bar</div>
+  </body>
+  </html>
+
+  # public/stylesheets/foo.css
+  .title {
+    color: red;
+  }
+
+  # result
+  <html>
+  <head>
+    <%= stylesheet_link_tag 'foo', :media => 'handheld, tty' %>
+  </head>
+  <body>
+    <div class="title" style="color:red">bar</div>
+  </body>
+  </html>
+
+== Author
+
+Copyright (c) 2008 milk1000cc, released under the MIT license
+
+milk1000cc <mailto:info@milk1000.cc>
+
+Gem and refactorings by Paul McMahon <mailto:paul@mobalean.com>
