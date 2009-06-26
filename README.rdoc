@@ -50,6 +50,13 @@ docomo_css works around this by inlining all CSS automatically for you.
   </body>
   </html>
 
+In addition to the basic usage, you may also provide the css inliner with additional directive by adding a docomo_css attribute to the style tag.
+
+Options for the value of this docomo_css are
+
+ * ignore - this stylesheet will not be inlined
+ * remove_after_inline - remove the link to this stylesheet after processing it
+
 == Author
 
 Copyright (c) 2008 milk1000cc, released under the MIT license
