@@ -17,7 +17,7 @@ module DocomoCss
     def after(controller)
       return unless controller.response.content_type == 'application/xhtml+xml'
       body = escape_numeric_character_reference controller.response.body
-      body = embed_css body
+      body = embed_css remove_xml_declare(body)
       controller.response.body = unescape_numeric_character_reference body
     end
 
@@ -32,7 +32,17 @@ module DocomoCss
         embed_pseudo_style(doc, extract_pseudo_style(css))
         embed_style(doc, css)
       end
-      doc.to_xhtml :indent => 0
+      xml_declare(doc) + doc.to_xhtml(:indent => 0)
+    end
+
+    def xml_declare(doc)
+      <<-XML
+<?xml version="1.0" encoding="#{doc.encoding}"?>
+      XML
+    end
+
+    def remove_xml_declare(body)
+      body.gsub(%r'<\?xml[^\?]*?\?>', '')
     end
 
     def embed_style(doc, css)

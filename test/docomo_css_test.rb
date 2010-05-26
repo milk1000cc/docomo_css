@@ -135,4 +135,23 @@ a:visited { color: blue; }
     @filter.embed_style doc, css
     assert_match %r'style="background-color:silver;color:red"', doc.to_xhtml
   end
+
+  def test_xml_declare
+    doc = stub("doc", :encoding => "Shift_JIS")
+    assert_equal <<-XML, @filter.xml_declare(doc)
+<?xml version="1.0" encoding="Shift_JIS"?>
+    XML
+
+    doc = stub("doc", :encoding => "UTF-8")
+    assert_equal <<-XML, @filter.xml_declare(doc)
+<?xml version="1.0" encoding="UTF-8"?>
+    XML
+  end
+
+  def test_remove_xml_declare
+    assert_equal '', @filter.remove_xml_declare('<?xml version="1.0"?>')
+    assert_equal '', @filter.remove_xml_declare('<?xml encoding="Shift_JIS"?>')
+    assert_equal '', @filter.remove_xml_declare('<?xml version="1.0" encoding="Shift_JIS" ?>')
+    assert_equal '', @filter.remove_xml_declare('<?xml?>')
+  end
 end
