@@ -1,0 +1,4 @@
+a:link      { color: red; }
+a:focus     { color: green; }
+a:visited   { color: blue; }
+div.content { background-color: #999 }
