@@ -15,7 +15,7 @@ docomo_css works around this by inlining all CSS automatically for you.
 
 == Install
 
-  sudo gem install milk1000cc-docomo_css --source=http://gems.github.com
+  sudo gem install docomo_css
 
 == Usage
 
