@@ -16,6 +16,7 @@ module DocomoCss
   class DocomoCssFilter
     def after(controller)
       return unless controller.response.content_type == 'application/xhtml+xml'
+      return unless controller.request.user_agent =~ /docomo/i
       body = escape_numeric_character_reference controller.response.body
       body = embed_css remove_xml_declare(body)
       controller.response.body = unescape_numeric_character_reference body
