@@ -155,13 +155,14 @@ a:visited { color: blue; }
     assert_equal '', @filter.remove_xml_declare('<?xml?>')
   end
 
-  def test_output
+  def test_output_with_docomo_1_0_browser
+    request = stub(:request) { expects(:user_agent).returns('DoCoMo/2.0 D905i(c100;TB;W24H17)') }
     response = stub("response") do
       expects(:content_type).returns('application/xhtml+xml')
       expects(:body).returns(File.open(File.join(File.dirname(__FILE__), 'actual.html'), 'rb'){ |f| f.read })
       expects(:body=).with(File.open(File.join(File.dirname(__FILE__), 'expected.html'), 'rb'){ |f| f.read })
     end
-    controller = stub("controller", :response => response)
+    controller = stub("controller", :response => response, :request => request)
     @filter.stubs(:css_path).returns(File.join(File.dirname(__FILE__), 'actual.css'))
 
     @filter.after(controller)
