@@ -168,6 +168,19 @@ a:visited { color: blue; }
     @filter.after(controller)
   end
 
+  def test_output_with_docomo_1_0_browser_and_utf8_charset
+    request = stub('request', :user_agent => 'DoCoMo/2.0 D905i(c100;TB;W24H17)')
+    response = stub("response") do
+      expects(:content_type).returns('application/xhtml+xml; charset=utf-8')
+      expects(:body).returns(File.open(File.join(File.dirname(__FILE__), 'actual.html'), 'rb'){ |f| f.read })
+      expects(:body=).with(File.open(File.join(File.dirname(__FILE__), 'expected.html'), 'rb'){ |f| f.read })
+    end
+    controller = stub("controller", :response => response, :request => request)
+    @filter.stubs(:css_path).returns(File.join(File.dirname(__FILE__), 'actual.css'))
+
+    @filter.after(controller)
+  end
+
   def test_output_with_docomo_2_0_browser
     request = stub('request', :user_agent => 'DoCoMo/2.0 N03B(c500;TB;W24H16)')
     response = stub("response") do
