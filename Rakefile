@@ -31,7 +31,7 @@ begin
     s.homepage = "http://www.milk1000.cc/"
     s.authors = ["milk1000cc", "Paul McMahon"]
     s.add_dependency 'hpricot'
-    s.add_dependency 'milk1000cc-tiny_css'
+    s.add_dependency 'tiny_css'
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
