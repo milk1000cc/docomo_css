@@ -156,7 +156,7 @@ a:visited { color: blue; }
   end
 
   def test_output_with_docomo_1_0_browser
-    request = stub(:request) { expects(:user_agent).returns('DoCoMo/2.0 D905i(c100;TB;W24H17)') }
+    request = stub('request', :user_agent => 'DoCoMo/2.0 D905i(c100;TB;W24H17)')
     response = stub("response") do
       expects(:content_type).returns('application/xhtml+xml')
       expects(:body).returns(File.open(File.join(File.dirname(__FILE__), 'actual.html'), 'rb'){ |f| f.read })
@@ -164,6 +164,17 @@ a:visited { color: blue; }
     end
     controller = stub("controller", :response => response, :request => request)
     @filter.stubs(:css_path).returns(File.join(File.dirname(__FILE__), 'actual.css'))
+
+    @filter.after(controller)
+  end
+
+  def test_output_with_docomo_2_0_browser
+    request = stub('request', :user_agent => 'DoCoMo/2.0 N03B(c500;TB;W24H16)')
+    response = stub("response") do
+      expects(:content_type).returns('application/xhtml+xml')
+      expects(:body).never
+    end
+    controller = stub("controller", :response => response, :request => request)
 
     @filter.after(controller)
   end

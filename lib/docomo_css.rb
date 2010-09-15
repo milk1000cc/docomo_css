@@ -17,6 +17,7 @@ module DocomoCss
     def after(controller)
       return unless controller.response.content_type == 'application/xhtml+xml'
       return unless controller.request.user_agent =~ /docomo/i
+      return if docomo_2_0_browser?(controller)
       body = escape_numeric_character_reference controller.response.body
       body = embed_css remove_xml_declare(body)
       controller.response.body = unescape_numeric_character_reference body
@@ -104,6 +105,12 @@ module DocomoCss
 
     def pseudo_selectors(css)
       css.style.keys.grep(/a:(link|focus|visited)/)
+    end
+
+    private
+
+    def docomo_2_0_browser?(controller)
+      controller.request.user_agent =~ /DoCoMo\/2\.0 [^(]*\(c(\d+);/ && $1.to_i >= 500
     end
   end
 end
