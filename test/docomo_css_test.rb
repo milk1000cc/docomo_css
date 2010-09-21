@@ -51,11 +51,6 @@ a:visited { color: FF00FF; }
     end
   end
 
-  def test_css_path
-    href = "/stylesheets/all.css?1274411517"
-    assert_equal "#{Rails.root}/public/stylesheets/all.css", @filter.css_path(href)
-  end
-
   def test_extract_pseudo_style
     css = TinyCss.new.read_string <<-CSS
 a:link    { color: red; }

@@ -6,4 +6,10 @@ class DocomoCss::StylesheetTest < Test::Unit::TestCase
     stylesheet = DocomoCss::Stylesheet.new(:href)
     assert_equal :href, stylesheet.href
   end
+
+  def test_css_path
+    href = "/stylesheets/all.css?1274411517"
+    stylesheet = DocomoCss::Stylesheet.new(href)
+    assert_equal "#{Rails.root}/public/stylesheets/all.css", stylesheet.path
+  end
 end

@@ -31,8 +31,8 @@ module DocomoCss
         stylesheet = DocomoCss::Stylesheet.new(linknode['href'])
         stylesheet.href or next
 
-        next unless FileTest.exist? css_path(stylesheet.href)
-        css = TinyCss.new.read(css_path(stylesheet.href))
+        next unless FileTest.exist? css_path(stylesheet)
+        css = TinyCss.new.read(css_path(stylesheet))
         embed_pseudo_style(doc, extract_pseudo_style(css))
         embed_style(doc, css)
       end
@@ -80,8 +80,8 @@ module DocomoCss
       document.xpath '//link[@rel="stylesheet"]'
     end
 
-    def css_path(href)
-      File.join(Rails.root, 'public', href.gsub(/\?\d+/, ''))
+    def css_path(stylesheet)
+      stylesheet.path
     end
 
     def extract_pseudo_style(css)
