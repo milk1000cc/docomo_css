@@ -29,9 +29,7 @@ module DocomoCss
 
       stylesheet_link_node(doc).each do |linknode|
         stylesheet = DocomoCss::Stylesheet.new(linknode['href'])
-        stylesheet.href or next
-
-        next unless FileTest.exist? stylesheet.path
+        next unless stylesheet.valid?
         css = TinyCss.new.read(stylesheet.path)
         embed_pseudo_style(doc, extract_pseudo_style(css))
         embed_style(doc, css)

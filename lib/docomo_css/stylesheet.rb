@@ -9,5 +9,9 @@ module DocomoCss
     def path
       File.join(Rails.root, 'public', href.gsub(/\?\d+/, ''))
     end
+
+    def valid?
+      href && FileTest.exist?(path)
+    end
   end
 end
