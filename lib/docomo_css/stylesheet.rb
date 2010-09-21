@@ -3,11 +3,19 @@ module DocomoCss
     attr_reader :path
 
     def initialize(href)
-      @path = href && File.join(Rails.root, 'public', href.gsub(/\?\d+/, ''))
+      @path = href && path_from_href(href)
     end
 
     def valid?
       path && FileTest.exist?(path)
+    end
+
+    private
+
+    def path_from_href(href)
+      base_path = href.gsub("http://#{ActionController::Base.asset_host}", '').
+                       gsub(/\?\d+/, '')
+      File.join(Rails.root, 'public', base_path)
     end
   end
 end
