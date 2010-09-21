@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{docomo_css}
-  s.version = "0.2.2"
+  s.version = "0.2.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["milk1000cc", "Paul McMahon"]
-  s.date = %q{2010-09-15}
+  s.date = %q{2010-09-21}
   s.description = %q{Inlines CSS so that you can use external CSS with docomo handsets.}
   s.email = %q{info@milk1000.cc}
   s.extra_rdoc_files = [
@@ -24,11 +24,13 @@ Gem::Specification.new do |s|
      "docomo_css.gemspec",
      "init.rb",
      "lib/docomo_css.rb",
+     "lib/docomo_css/stylesheet.rb",
      "rails/init.rb",
-     "test/actual.css",
      "test/actual.html",
+     "test/docomo_css/stylesheet_test.rb",
      "test/docomo_css_test.rb",
-     "test/expected.html"
+     "test/expected.html",
+     "test/public/actual.css"
   ]
   s.homepage = %q{http://www.milk1000.cc/}
   s.rdoc_options = ["--charset=UTF-8"]
@@ -36,7 +38,8 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{CSS inliner}
   s.test_files = [
-    "test/docomo_css_test.rb"
+    "test/docomo_css/stylesheet_test.rb",
+     "test/docomo_css_test.rb"
   ]
 
   if s.respond_to? :specification_version then
