@@ -158,7 +158,6 @@ a:visited { color: blue; }
       expects(:body=).with(File.open(File.join(File.dirname(__FILE__), 'expected.html'), 'rb'){ |f| f.read })
     end
     controller = stub("controller", :response => response, :request => request)
-    @filter.stubs(:css_path).returns(File.join(File.dirname(__FILE__), 'actual.css'))
 
     @filter.after(controller)
   end
@@ -171,7 +170,6 @@ a:visited { color: blue; }
       expects(:body=).with(File.open(File.join(File.dirname(__FILE__), 'expected.html'), 'rb'){ |f| f.read })
     end
     controller = stub("controller", :response => response, :request => request)
-    @filter.stubs(:css_path).returns(File.join(File.dirname(__FILE__), 'actual.css'))
 
     @filter.after(controller)
   end
