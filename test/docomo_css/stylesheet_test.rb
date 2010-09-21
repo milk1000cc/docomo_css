@@ -1,7 +1,7 @@
 require 'test/unit'
 require File.join File.dirname(__FILE__), '..', '..', 'lib', 'docomo_css', 'stylesheet'
 
-module ActionController; module Base; def self.asset_host; "assets.example.com"; end; end; end
+module ActionController; module Base; def self.asset_host; "http://assets.example.com"; end; end; end
 
 class DocomoCss::StylesheetTest < Test::Unit::TestCase
   def test_css_path

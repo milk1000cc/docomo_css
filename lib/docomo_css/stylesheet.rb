@@ -13,7 +13,7 @@ module DocomoCss
     private
 
     def path_from_href(href)
-      base_path = href.gsub("http://#{ActionController::Base.asset_host}", '').
+      base_path = href.gsub(ActionController::Base.asset_host, '').
                        gsub(/\?\d+/, '')
       File.join(Rails.root, 'public', base_path)
     end
