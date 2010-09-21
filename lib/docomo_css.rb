@@ -1,5 +1,6 @@
 require 'nokogiri'
 require 'tiny_css'
+require 'docomo_css/stylesheet'
 
 module DocomoCss
 
@@ -27,10 +28,11 @@ module DocomoCss
       doc = Nokogiri::HTML(body)
 
       stylesheet_link_node(doc).each do |linknode|
-        href = linknode['href'] or next
+        stylesheet = DocomoCss::Stylesheet.new(linknode['href'])
+        stylesheet.href or next
 
-        next unless FileTest.exist? css_path(href)
-        css = TinyCss.new.read(css_path(href))
+        next unless FileTest.exist? css_path(stylesheet.href)
+        css = TinyCss.new.read(css_path(stylesheet.href))
         embed_pseudo_style(doc, extract_pseudo_style(css))
         embed_style(doc, css)
       end
