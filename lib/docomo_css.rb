@@ -34,7 +34,7 @@ module DocomoCss
         embed_pseudo_style(doc, extract_pseudo_style(css))
         embed_style(doc, css)
       end
-      xml_declare(doc) + doc.to_xhtml(:indent => 0)
+      xml_declare(doc) + doc.to_xhtml(:indent => 0, :encoding => doc.encoding)
     end
 
     def xml_declare(doc)
