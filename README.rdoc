@@ -17,6 +17,8 @@ docomo_css works around this by inlining all CSS automatically for you.
 
   sudo gem install docomo_css
 
+libxml 2.7 or later is required
+
 == Usage
 
   # app/controllers/articles_controller.rb
