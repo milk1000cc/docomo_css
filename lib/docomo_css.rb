@@ -19,9 +19,9 @@ module DocomoCss
       return unless controller.response.content_type =~ /application\/xhtml\+xml/
       return unless controller.request.user_agent =~ /docomo/i
       return if docomo_2_0_browser?(controller)
-      body = escape_numeric_character_reference controller.response.body
+      body = escape_character_reference controller.response.body
       body = embed_css remove_xml_declare(body)
-      controller.response.body = unescape_numeric_character_reference body
+      controller.response.body = unescape_character_reference body
     end
 
     def embed_css(body)
@@ -66,12 +66,12 @@ module DocomoCss
       style + other_style
     end
 
-    def escape_numeric_character_reference(text)
-      text.gsub /&#(\d+|x[\da-fA-F]+);/, 'HTMLCSSINLINERESCAPE\1::::::::'
+    def escape_character_reference(text)
+      text.gsub /&(#?[\da-zA-Z]+);/, 'HTMLCSSINLINERESCAPE\1::::::::'
     end
 
-    def unescape_numeric_character_reference(text)
-      text.gsub /HTMLCSSINLINERESCAPE(\d+|x[\da-fA-F]+)::::::::/, '&#\1;'
+    def unescape_character_reference(text)
+      text.gsub /HTMLCSSINLINERESCAPE(#?[\da-zA-Z]+)::::::::/, '&\1;'
     end
 
     def stylesheet_link_node(document)
