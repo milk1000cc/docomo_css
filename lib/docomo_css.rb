@@ -10,7 +10,22 @@ module DocomoCss
 
   module ClassMethods
     def docomo_filter
-      after_filter DocomoCssFilter.new
+      @jpmobile_filter_klasses = []
+      if defined?(Jpmobile)
+        filter_chain.dup.each do |filter|
+          [Jpmobile::Filter::Emoticon::Outer, Jpmobile::Filter::Sjis, Jpmobile::Filter::Emoticon::Inner,
+            Jpmobile::Filter::HankakuKana].each do |klass|
+            if filter.method.instance_of?(klass)
+              filter_chain.delete filter
+              @jpmobile_filter_klasses << klass
+            end
+          end
+        end
+      end
+
+      @jpmobile_filter_klasses.each { |v| before_filter v.new }
+      after_filter (@jpmobile_filter_klasses.empty? ? DocomoCssFilter : DocomoCssFilterWithJpmobile).new
+      @jpmobile_filter_klasses.reverse.each { |v| after_filter v.new }
     end
   end
 
@@ -111,6 +126,21 @@ module DocomoCss
 
     def docomo_2_0_browser?(controller)
       controller.request.user_agent =~ /DoCoMo\/2\.0 [^(]*\(c(\d+);/ && $1.to_i >= 500
+    end
+  end
+
+  class DocomoCssFilterWithJpmobile < DocomoCssFilter
+    def embed_css(body)
+      doc = Nokogiri::HTML(body, nil, 'UTF-8')
+
+      stylesheet_link_node(doc).each do |linknode|
+        stylesheet = DocomoCss::Stylesheet.new(linknode['href'])
+        next unless stylesheet.valid?
+        css = TinyCss.new.read(stylesheet.path)
+        embed_pseudo_style(doc, extract_pseudo_style(css))
+        embed_style(doc, css)
+      end
+      doc.to_s
     end
   end
 end
