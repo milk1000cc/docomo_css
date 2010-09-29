@@ -67,11 +67,11 @@ module DocomoCss
     end
 
     def escape_numeric_character_reference(text)
-      text.gsub /&#(\d+);/, 'HTMLCSSINLINERESCAPE\1::::::::'
+      text.gsub /&#(\d+|x[\da-fA-F]+);/, 'HTMLCSSINLINERESCAPE\1::::::::'
     end
 
     def unescape_numeric_character_reference(text)
-      text.gsub /HTMLCSSINLINERESCAPE(\d+)::::::::/, '&#\1;'
+      text.gsub /HTMLCSSINLINERESCAPE(\d+|x[\da-fA-F]+)::::::::/, '&#\1;'
     end
 
     def stylesheet_link_node(document)

@@ -22,10 +22,12 @@ class DocomoCssTest < Test::Unit::TestCase
 
   def test_escape_numeric_character_reference
     assert_equal "HTMLCSSINLINERESCAPE123456789::::::::", @filter.escape_numeric_character_reference("&#123456789;")
+    assert_equal "HTMLCSSINLINERESCAPEx123def::::::::", @filter.escape_numeric_character_reference("&#x123def;")
   end
 
   def test_unescape_numeric_character_reference
     assert_equal "&#123456789;", @filter.unescape_numeric_character_reference("HTMLCSSINLINERESCAPE123456789::::::::")
+    assert_equal "&#x123def;", @filter.unescape_numeric_character_reference("HTMLCSSINLINERESCAPEx123def::::::::")
   end
 
   def test_pseudo_selectors
