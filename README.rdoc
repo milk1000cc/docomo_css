@@ -54,7 +54,8 @@ libxml 2.7 or later is required
 
 Options for the value of this docomo_css are
 
- * mobile - always transform css when content type is application/xhtml+xml
+ * mobile - always transform css when content type is application/xhtml+xml, default false
+ * xml_declare - add xml declaration, default true
 
 == Author
 

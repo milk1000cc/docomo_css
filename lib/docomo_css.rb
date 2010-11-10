@@ -10,7 +10,7 @@ module DocomoCss
 
   module ClassMethods
     def docomo_filter(options = {})
-      options = { :mobile => false }.update(options)
+      options = { :xml_declare => true, :mobile => false }.update(options)
 
       after_filter DocomoCssFilter.new(options)
     end
@@ -45,7 +45,11 @@ module DocomoCss
         embed_pseudo_style(doc, extract_pseudo_style(css))
         embed_style(doc, css)
       end
-      xml_declare(doc) + doc.to_xhtml(:indent => 0, :encoding => doc.encoding)
+
+      result = ''
+      result << xml_declare(doc) if @options[:xml_declare]
+      result << doc.to_xhtml(:indent => 0, :encoding => doc.encoding)
+      result
     end
 
     def xml_declare(doc)
