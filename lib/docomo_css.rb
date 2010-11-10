@@ -16,6 +16,7 @@ module DocomoCss
 
   class DocomoCssFilter
     def after(controller)
+      @controller = controller
       return unless controller.response.content_type =~ /application\/xhtml\+xml/
       return unless controller.request.user_agent =~ /docomo/i
       return if docomo_2_0_browser?(controller)
@@ -25,6 +26,8 @@ module DocomoCss
     end
 
     def embed_css(body)
+      body = body.dup
+      body.force_encoding(@controller.response.body.encoding) if body.respond_to?(:force_encoding)
       doc = Nokogiri::HTML(body)
 
       stylesheet_link_node(doc).each do |linknode|

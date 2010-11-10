@@ -1,1 +1,2 @@
-require File.join File.dirname(__FILE__), 'rails', 'init'
+require 'docomo_css'
+ActionController::Base.send :include, DocomoCss

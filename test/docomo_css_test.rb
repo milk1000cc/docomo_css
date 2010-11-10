@@ -1,7 +1,10 @@
+$:.unshift File.expand_path('../lib', File.dirname(__FILE__))
+
 require 'test/unit'
 require 'rubygems'
 require 'mocha'
-require File.join File.dirname(__FILE__), '..', 'lib', 'docomo_css'
+require 'action_controller'
+require File.expand_path('../lib/docomo_css', File.dirname(__FILE__))
 
 Rails = Mocha::Mockery.instance.unnamed_mock
 Rails.stubs(:root => File.dirname(__FILE__))
@@ -158,7 +161,7 @@ a:visited { color: blue; }
     request = stub('request', :user_agent => 'DoCoMo/2.0 D905i(c100;TB;W24H17)')
     response = stub("response") do
       expects(:content_type).returns('application/xhtml+xml')
-      expects(:body).returns(File.open(File.join(File.dirname(__FILE__), 'actual.html'), 'rb'){ |f| f.read })
+      expects(:body).returns(File.open(File.join(File.dirname(__FILE__), 'actual.html'), 'rb'){ |f| f.read }).at_least_once
       expects(:body=).with(File.open(File.join(File.dirname(__FILE__), 'expected.html'), 'rb'){ |f| f.read })
     end
     controller = stub("controller", :response => response, :request => request)
@@ -170,7 +173,7 @@ a:visited { color: blue; }
     request = stub('request', :user_agent => 'DoCoMo/2.0 D905i(c100;TB;W24H17)')
     response = stub("response") do
       expects(:content_type).returns('application/xhtml+xml; charset=utf-8')
-      expects(:body).returns(File.open(File.join(File.dirname(__FILE__), 'actual.html'), 'rb'){ |f| f.read })
+      expects(:body).returns(File.open(File.join(File.dirname(__FILE__), 'actual.html'), 'rb'){ |f| f.read }).at_least_once
       expects(:body=).with(File.open(File.join(File.dirname(__FILE__), 'expected.html'), 'rb'){ |f| f.read })
     end
     controller = stub("controller", :response => response, :request => request)
