@@ -9,17 +9,25 @@ module DocomoCss
   end
 
   module ClassMethods
-    def docomo_filter
-      after_filter DocomoCssFilter.new
+    def docomo_filter(options = {})
+      options = { :mobile => false }.update(options)
+
+      after_filter DocomoCssFilter.new(options)
     end
   end
 
   class DocomoCssFilter
+    def initialize(options = {})
+      @options = options
+    end
+
     def after(controller)
       @controller = controller
       return unless controller.response.content_type =~ /application\/xhtml\+xml/
-      return unless controller.request.user_agent =~ /docomo/i
-      return if docomo_2_0_browser?(controller)
+      unless @options[:mobile]
+        return unless controller.request.user_agent =~ /docomo/i
+        return if docomo_2_0_browser?(controller)
+      end
       body = escape_character_reference controller.response.body
       body = embed_css remove_xml_declare(body)
       controller.response.body = unescape_character_reference body
