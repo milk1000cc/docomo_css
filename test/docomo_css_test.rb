@@ -1,10 +1,5 @@
-require 'test/unit'
-require 'rubygems'
-require 'mocha'
+require 'test_helper'
 require File.join File.dirname(__FILE__), '..', 'lib', 'docomo_css'
-
-Rails = Mocha::Mockery.instance.unnamed_mock
-Rails.stubs(:root => File.dirname(__FILE__))
 
 class DocomoCssTest < Test::Unit::TestCase
   def setup
