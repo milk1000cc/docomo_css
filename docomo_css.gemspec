@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project = "docomo_css"
 
-  s.files = Dir["MIT-LICENSE", "README.rdoc", "lib/**/*", "rails/init.rb"]
+  s.files = Dir["MIT-LICENSE", "README.rdoc", "lib/**/*"]
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_path = "lib"
 

@@ -1,6 +1,7 @@
 require 'nokogiri'
 require 'tiny_css'
 require 'docomo_css/stylesheet'
+require 'docomo_css/railtie'
 
 module DocomoCss
 
