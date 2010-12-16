@@ -135,7 +135,7 @@ a:visited { color: blue; }
 </html>
     HTML
     @filter.embed_style doc, css
-    assert_match %r'<h1 class="title"><span style="color:red">', doc.to_xhtml
+    assert_match %r'<div style="color:red"><h1 class="title"><span style="color:red">', doc.to_xhtml
   end
 
   def test_xml_declare

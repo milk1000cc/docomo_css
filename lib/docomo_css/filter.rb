@@ -42,10 +42,18 @@ module DocomoCss
         doc.css(selector).each do |element|
           # inject support for unsupported styles
           if /h\d/ =~ element.name 
+            # font-size needs to be changed in span
             element.children.wrap('<span>')
-            element = element.children.first
+            element.children.first['style'] = merge_style element['style'], stringified_style
+
+            # background-color should be changed in div to give 100% width
+            div = Nokogiri.make("<div>")
+            div['style'] = merge_style element['style'], stringified_style
+            element.replace(div)
+            div.add_child(element)
+          else
+            element['style'] = merge_style element['style'], stringified_style
           end
-          element['style'] = merge_style element['style'], stringified_style
         end
       end
     end
