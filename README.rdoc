@@ -13,6 +13,16 @@ Instead, every element must use its own style attribute, for example
 
 docomo_css works around this by inlining all CSS automatically for you.
 
+Also, docomo does not support styling some elements such as h1, but does if you nest the contents in a span.  This library automatically handles transforming
+
+  <h1>foo</h1>
+
+to
+
+  <h1><span>foo</span></h1>
+
+so you don't need to change any styling.
+
 == Install
 
   sudo gem install docomo_css

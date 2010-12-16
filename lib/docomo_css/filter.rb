@@ -40,6 +40,11 @@ module DocomoCss
       css.style.each do |selector, style|
         stringified_style = stringify_style(style)
         doc.css(selector).each do |element|
+          # inject support for unsupported styles
+          if /h\d/ =~ element.name 
+            element.children.wrap('<span>')
+            element = element.children.first
+          end
           element['style'] = merge_style element['style'], stringified_style
         end
       end
