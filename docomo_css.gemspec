@@ -19,4 +19,5 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'nokogiri', ">= 0"
   s.add_dependency 'tiny_css', ">= 0"
+  s.add_dependency 'rails', ">= 3.0.0"
 end
