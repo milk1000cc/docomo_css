@@ -1,4 +1,5 @@
 require 'docomo_css/stylesheet'
+require 'docomo_css/embeddable_style'
 require 'nokogiri'
 require 'tiny_css'
 
@@ -38,34 +39,10 @@ module DocomoCss
 
     def embed_style(doc, css)
       css.style.each do |selector, style|
-        stringified_style = stringify_style(style)
         doc.css(selector).each do |element|
-          # inject support for unsupported styles
-          if /h\d/ =~ element.name 
-            # font-size needs to be changed in span
-            element.children.wrap('<span>')
-            element.children.first['style'] = merge_style element['style'], stringified_style
-
-            # background-color should be changed in div to give 100% width
-            div = Nokogiri.make("<div>")
-            div['style'] = merge_style element['style'], stringified_style
-            element.replace(div)
-            div.add_child(element)
-          else
-            element['style'] = merge_style element['style'], stringified_style
-          end
+          element.embed_style(style)
         end
       end
-    end
-
-    def stringify_style(style)
-      style.map { |k, v| "#{ k }:#{ v }" }.join ';'
-    end
-
-    def merge_style(style, other_style)
-      return other_style if style == nil
-      style += ";" unless style =~ /;\Z/
-      style + other_style
     end
 
     def escape_numeric_character_reference(text)
