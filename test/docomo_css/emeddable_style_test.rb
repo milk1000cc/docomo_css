@@ -24,6 +24,13 @@ class DocomoCss::EmbeddableStyleTest < Test::Unit::TestCase
     assert_equal '<h1><span style="color:red">foo</span></h1>', doc.at("body").children.to_html
   end
 
+  def test_embed_style_obeys_inject_unsupported_styles
+    doc = Nokogiri::HTML("<h1>foo</h1>")
+    e = doc.at("h1")
+    e.embed_style(style, :inject_unsupported_styles => false)
+    assert_equal '<h1 style="color:red">foo</h1>', doc.at("body").children.to_html
+  end
+
   def test_embed_style_in_h1_handles_wrapping_of_font_size
     doc = Nokogiri::HTML("<h1>foo</h1>")
     e = doc.at("h1")

@@ -5,6 +5,10 @@ require 'tiny_css'
 
 module DocomoCss
   class Filter
+    def initialize(options = {})
+      @options = {}
+    end
+
     def after(controller)
       return unless controller.response.content_type =~ /application\/xhtml\+xml/
       return unless controller.request.user_agent =~ /docomo/i
