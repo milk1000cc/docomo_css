@@ -128,6 +128,15 @@ a:visited { color: blue; }
     assert_match %r'style="background-color:silver;color:red"', doc.to_xhtml
   end
 
+  def test_embed_style_in_multiple_h1s
+    css = TinyCss.new.read_string("h1 { color: red; }")
+
+    doc = Nokogiri::HTML("<h1>foo</h1><h1>bar</h1>")
+    @filter.embed_style doc, css
+    assert_match '<span style="color:red">foo</span>', doc.search('h1')[0].children.to_xhtml
+    assert_match '<span style="color:red">bar</span>', doc.search('h1')[1].children.to_xhtml
+  end
+
   def test_xml_declare
     doc = stub("doc", :encoding => "Shift_JIS")
     assert_equal <<-XML, @filter.xml_declare(doc)
