@@ -22,6 +22,7 @@ module DocomoCss
       doc = Nokogiri::HTML(body)
 
       stylesheet_link_node(doc).each do |linknode|
+        linknode.unlink
         stylesheet = DocomoCss::Stylesheet.new(linknode['href'])
         next unless stylesheet.valid?
         css = TinyCss.new.read(stylesheet.path)
