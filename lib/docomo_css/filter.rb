@@ -6,7 +6,7 @@ require 'tiny_css'
 module DocomoCss
   class Filter
     def initialize(options = {})
-      @options = {}
+      @options = options
     end
 
     def after(controller)
