@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'tiny_css'
 require File.join File.dirname(__FILE__), '..', '..', 'lib', 'docomo_css', 'embeddable_style'
 
 class DocomoCss::EmbeddableStyleTest < Test::Unit::TestCase
@@ -70,6 +71,20 @@ class DocomoCss::EmbeddableStyleTest < Test::Unit::TestCase
     e.merge_style('font-size:small')
     assert_equal '<h1 style="color:red;font-size:small"></h1>', e.to_html
   end
+
+  def test_embed_style_in_h1_handles_multiple_styles
+    doc = Nokogiri::HTML("<h1>foo</h1>")
+    e = doc.at("h1")
+    style = TinyCss::OrderedHash.new
+    style["font-size"] = "medium"
+    style["color"] = "#ffffff"
+    style["text-align"] = "center"
+    style["background"] = "#215f8b"
+    style["margin-top"] = "5px"
+    e.embed_style(style)
+    assert_equal %q{<div style="background:#215f8b"><h1 style="text-align:center;margin-top:5px"><span style="font-size:medium;color:#ffffff">foo</span></h1></div>}, doc.at("body").children.to_html
+  end
+
   private
 
   def style(attribute = 'color', value = 'red')

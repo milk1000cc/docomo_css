@@ -18,6 +18,6 @@ Gem::Specification.new do |s|
   s.require_path = "lib"
 
   s.add_dependency 'nokogiri', ">= 0"
-  s.add_dependency 'tiny_css', "~> 0.1.1"
+  s.add_dependency 'tiny_css', "~> 0.1.2"
   s.add_dependency 'rails', ">= 3.0.0"
 end
