@@ -190,4 +190,22 @@ a:visited { color: blue; }
 
     @filter.after(controller)
   end
+
+  def test_embed_css_detects_missing_character_encoding
+    xml = <<-EOD
+      <?xml version='1.0' encoding='utf-8' ?>
+      <!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.2//EN" "http://www.openmobilealliance.org/tech/DTD/xhtml-mobile12.dtd">
+      <html lang='ja' xml:lang='ja' xmlns='http://www.w3.org/1999/xhtml'>
+      <head>
+      </head>
+      <body>
+        ほげ
+      </body>
+      </html>
+    EOD
+    encoded_body = @filter.embed_css(xml)
+    assert_match "ほげ", encoded_body
+    assert_match '<meta content="application/xhtml+xml;charset=UTF-8" http-equiv="content-type" />', encoded_body
+    assert_match '<!-- Please explicitly specify the encoding of your document as below. Assuming UTF-8. -->', encoded_body
+  end
 end
