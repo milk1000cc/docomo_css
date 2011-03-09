@@ -22,7 +22,7 @@ module DocomoCss
     private
 
     def inject_unsupported_styles(style)
-      if /h\d/ =~ name 
+      if /^(h\d|p)$/ =~ name 
         if (h = style.split('color', 'font-size')) && !h.empty? && !children.empty?
           children.wrap('<span>')
           children.first.merge_style h

@@ -85,6 +85,20 @@ class DocomoCss::EmbeddableStyleTest < Test::Unit::TestCase
     assert_equal %q{<div style="background:#215f8b"><h1 style="text-align:center;margin-top:5px"><span style="font-size:medium;color:#ffffff">foo</span></h1></div>}, doc.at("body").children.to_html
   end
 
+  def test_embed_style_in_p_handles_color
+    doc = Nokogiri::HTML("<p>foo</p>")
+    e = doc.at("p")
+    e.embed_style(style)
+    assert_equal '<p><span style="color:red">foo</span></p>', doc.at("body").children.to_html
+  end
+
+  def test_embed_style_in_p_handles_background_color
+    doc = Nokogiri::HTML("<p>foo</p>")
+    e = doc.at("p")
+    e.embed_style(style('background-color', 'red'))
+    assert_equal '<div style="background-color:red"><p>foo</p></div>', doc.at("body").children.to_html
+  end
+
   private
 
   def style(attribute = 'color', value = 'red')
