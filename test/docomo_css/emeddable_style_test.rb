@@ -99,6 +99,30 @@ class DocomoCss::EmbeddableStyleTest < Test::Unit::TestCase
     assert_equal '<div style="background-color:red"><p>foo</p></div>', doc.at("body").children.to_html
   end
 
+  def test_embed_style_with_border_bottom_transforms_to_hr
+    doc = Nokogiri::HTML("<div>foo</div>")
+    e = doc.at("div")
+    e.embed_style(style('border-bottom', '1px solid red'))
+    assert_equal %Q{<div>foo</div>\n<hr style="border:1px solid red">}, doc.at("body").children.to_html
+  end
+
+  def test_embed_style_with_border_top_transforms_to_hr
+    doc = Nokogiri::HTML("<div>foo</div>")
+    e = doc.at("div")
+    e.embed_style(style('border-top', '1px solid red'))
+    assert_equal %Q{<hr style="border:1px solid red">\n<div>foo</div>}, doc.at("body").children.to_html
+  end
+
+  def test_embed_style_with_border_top_and_bottom_transforms_to_hr
+    doc = Nokogiri::HTML("<div>foo</div>")
+    e = doc.at("div")
+    h = style('border-top', '1px solid red')
+    h['border-bottom'] = '1px solid green'
+    e.embed_style(h)
+    assert_equal %Q{<hr style="border:1px solid red">\n<div>foo</div>\n<hr style="border:1px solid green">}, doc.at("body").children.to_html
+  end
+
+
   private
 
   def style(attribute = 'color', value = 'red')
