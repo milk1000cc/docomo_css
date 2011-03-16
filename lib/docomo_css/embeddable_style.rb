@@ -34,15 +34,6 @@ module DocomoCss
           div.add_child(self)
         end
       end
-      { :bottom => :after, :top => :before}.each do |position, method|
-        s = "border-#{position}"
-        if (h = style.split(s)) && !h.empty?
-          h['border'] = h.delete(s)
-          hr = Nokogiri.make("<hr>")
-          hr.merge_style(h)
-          send(method, hr)
-        end
-      end
     end
   end
 end
