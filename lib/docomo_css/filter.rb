@@ -20,9 +20,9 @@ module DocomoCss
 
     def embed_css(body)
       doc = Nokogiri::HTML(body)
-      unless doc.encoding
-        doc.at("/html/head").add_child("<!-- Please explicitly specify the encoding of your document as below. Assuming UTF-8. -->")
-        doc.at("/html/head").add_child("<meta content='application/xhtml+xml;charset=UTF-8' http-equiv='content-type' />")
+      if doc.encoding.nil? && head = doc.at("/html/head")
+        head.add_child("<!-- Please explicitly specify the encoding of your document as below. Assuming UTF-8. -->")
+        head.add_child("<meta content='application/xhtml+xml;charset=UTF-8' http-equiv='content-type' />")
         doc.encoding = "UTF-8"
       end
 
