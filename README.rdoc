@@ -1,4 +1,4 @@
-= DocomoCss
+= DocomoCss {<img src="https://travis-ci.org/milk1000cc/docomo_css.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/milk1000cc/docomo_css]
 
 docomo_css is a CSS in-liner.
 
