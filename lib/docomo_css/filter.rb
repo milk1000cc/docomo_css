@@ -31,8 +31,13 @@ module DocomoCss
       stylesheet_link_node(doc).each do |linknode|
         linknode.unlink
         stylesheet = DocomoCss::Stylesheet.new(linknode['href'])
-        next unless stylesheet.valid?
-        css = TinyCss.new.read(stylesheet.path)
+        if stylesheet.valid?
+          css = TinyCss.new.read(stylesheet.path)
+        else
+          css = stylesheet.asset_css
+          next unless css
+          css = TinyCss.new.read_string(css)
+        end
         embed_pseudo_style(doc, extract_pseudo_style(css))
         embed_style(doc, css)
       end

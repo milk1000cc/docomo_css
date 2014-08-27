@@ -231,6 +231,21 @@ a:visited { color: blue; }
     @filter.after(controller)
   end
 
+  def test_asset_pipeline
+    css = open(File.expand_path('../public/actual.css', __dir__)) { |f| f.read }
+    mock_asset 'actual.css', false, css
+
+    request = stub('request', :user_agent => 'DoCoMo/2.0 D905i(c100;TB;W24H17)')
+    response = stub("response") do
+      expects(:content_type).returns('application/xhtml+xml')
+      expects(:body).returns(File.open(File.join(File.dirname(__FILE__), '../actual_asset.html'), 'rb'){ |f| f.read })
+      expects(:body=).with(File.open(File.join(File.dirname(__FILE__), '../expected.html'), 'rb'){ |f| f.read })
+    end
+    controller = stub("controller", :response => response, :request => request)
+
+    @filter.after(controller)
+  end
+
   def test_embed_css_detects_missing_character_encoding
     xml = <<-EOD
       <?xml version='1.0' encoding='utf-8' ?>
