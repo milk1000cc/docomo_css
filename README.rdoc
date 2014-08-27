@@ -32,7 +32,7 @@ so you don't need to change any styling. If you were doing this manually before 
 == Requirements
 
  * libxml 2.7 or later is required
- * Rails 3
+ * Rails 3 or later
 
 == Usage
 
