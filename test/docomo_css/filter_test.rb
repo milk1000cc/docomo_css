@@ -1,17 +1,9 @@
-$:.unshift File.expand_path('../lib', File.dirname(__FILE__))
+require 'test_helper'
+require File.join File.dirname(__FILE__), '..', '..', 'lib', 'docomo_css', 'filter'
 
-require 'test/unit'
-require 'rubygems'
-require 'mocha'
-require 'action_controller'
-require File.expand_path('../lib/docomo_css', File.dirname(__FILE__))
-
-Rails = Mocha::Mockery.instance.unnamed_mock
-Rails.stubs(:root => File.dirname(__FILE__))
-
-class DocomoCssTest < Test::Unit::TestCase
+class DocomoCss::FilterTest < MiniTest::Test
   def setup
-    @filter = DocomoCss::DocomoCssFilter.new
+    @filter = DocomoCss::Filter.new
   end
 
   def test_invalid_response_content_type
@@ -97,7 +89,7 @@ a:visited { color: blue; }
 <body></body>
 </html>
     HTML
-    assert_raise RuntimeError do
+    assert_raises RuntimeError do
       @filter.embed_pseudo_style doc, css
     end
   end
@@ -138,6 +130,15 @@ a:visited { color: blue; }
     assert_match %r'style="background-color:silver;color:red"', doc.to_xhtml
   end
 
+  def test_embed_style_in_multiple_h1s
+    css = TinyCss.new.read_string("h1 { color: red; }")
+
+    doc = Nokogiri::HTML("<h1>foo</h1><h1>bar</h1>")
+    @filter.embed_style doc, css
+    assert_match '<span style="color:red">foo</span>', doc.search('h1')[0].children.to_xhtml
+    assert_match '<span style="color:red">bar</span>', doc.search('h1')[1].children.to_xhtml
+  end
+
   def test_xml_declare
     doc = stub("doc", :encoding => "Shift_JIS")
     assert_equal <<-XML, @filter.xml_declare(doc)
@@ -161,8 +162,8 @@ a:visited { color: blue; }
     request = stub('request', :user_agent => 'DoCoMo/2.0 D905i(c100;TB;W24H17)')
     response = stub("response") do
       expects(:content_type).returns('application/xhtml+xml')
-      expects(:body).returns(File.open(File.join(File.dirname(__FILE__), 'actual.html'), 'rb'){ |f| f.read }).at_least_once
-      expects(:body=).with(File.open(File.join(File.dirname(__FILE__), 'expected.html'), 'rb'){ |f| f.read })
+      expects(:body).returns(File.open(File.join(File.dirname(__FILE__), '../actual.html'), 'rb'){ |f| f.read })
+      expects(:body=).with(File.open(File.join(File.dirname(__FILE__), '../expected.html'), 'rb'){ |f| f.read })
     end
     controller = stub("controller", :response => response, :request => request)
 
@@ -173,8 +174,8 @@ a:visited { color: blue; }
     request = stub('request', :user_agent => 'DoCoMo/2.0 D905i(c100;TB;W24H17)')
     response = stub("response") do
       expects(:content_type).returns('application/xhtml+xml; charset=utf-8')
-      expects(:body).returns(File.open(File.join(File.dirname(__FILE__), 'actual.html'), 'rb'){ |f| f.read }).at_least_once
-      expects(:body=).with(File.open(File.join(File.dirname(__FILE__), 'expected.html'), 'rb'){ |f| f.read })
+      expects(:body).returns(File.open(File.join(File.dirname(__FILE__), '../actual.html'), 'rb'){ |f| f.read })
+      expects(:body=).with(File.open(File.join(File.dirname(__FILE__), '../expected.html'), 'rb'){ |f| f.read })
     end
     controller = stub("controller", :response => response, :request => request)
 
@@ -190,5 +191,62 @@ a:visited { color: blue; }
     controller = stub("controller", :response => response, :request => request)
 
     @filter.after(controller)
+  end
+
+  def test_output_when_mobile_option_is_true_and_content_type_is_xhtml
+    request = stub('request')
+    response = stub("response") do
+      expects(:content_type).returns('application/xhtml+xml')
+      expects(:body).returns(File.open(File.join(File.dirname(__FILE__), '../actual.html'), 'rb'){ |f| f.read })
+      expects(:body=).with(File.open(File.join(File.dirname(__FILE__), '../expected.html'), 'rb'){ |f| f.read })
+    end
+    controller = stub("controller", :response => response, :request => request)
+
+    @filter = DocomoCss::Filter.new(mobile: true)
+    @filter.after(controller)
+  end
+
+  def test_output_when_mobile_option_is_true_and_content_type_is_html
+    request = stub('request')
+    response = stub("response") do
+      expects(:content_type).returns('text/html')
+      expects(:body).never
+    end
+    controller = stub("controller", :response => response, :request => request)
+
+    @filter = DocomoCss::Filter.new(mobile: true)
+    @filter.after(controller)
+  end
+
+  def test_output_when_xml_declare_option_is_false
+    request = stub('request', :user_agent => 'DoCoMo/2.0 D905i(c100;TB;W24H17)')
+    response = stub("response") do
+      expects(:content_type).returns('application/xhtml+xml')
+      expects(:body).returns(File.open(File.join(File.dirname(__FILE__), '../actual.html'), 'rb'){ |f| f.read })
+      expects(:body=).with(File.open(File.join(File.dirname(__FILE__), '../expected_no_declare.html'), 'rb'){ |f| f.read })
+    end
+    controller = stub("controller", :response => response, :request => request)
+
+    @filter = DocomoCss::Filter.new(xml_declare: false)
+    @filter.after(controller)
+  end
+
+  def test_embed_css_detects_missing_character_encoding
+    xml = <<-EOD
+      <?xml version='1.0' encoding='utf-8' ?>
+      <!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.2//EN" "http://www.openmobilealliance.org/tech/DTD/xhtml-mobile12.dtd">
+      <html lang='ja' xml:lang='ja' xmlns='http://www.w3.org/1999/xhtml'>
+      <head>
+      </head>
+      <body>
+        ほげ
+      </body>
+      </html>
+    EOD
+    xml.force_encoding 'ASCII-8BIT'
+    encoded_body = @filter.embed_css(xml)
+    assert_match "ほげ", encoded_body
+    assert_match '<meta content="application/xhtml+xml;charset=UTF-8" http-equiv="content-type" />', encoded_body
+    assert_match '<!-- Please explicitly specify the encoding of your document as below. Assuming UTF-8. -->', encoded_body
   end
 end

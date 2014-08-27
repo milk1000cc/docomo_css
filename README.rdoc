@@ -13,11 +13,26 @@ Instead, every element must use its own style attribute, for example
 
 docomo_css works around this by inlining all CSS automatically for you.
 
+Also, docomo does not support styling some elements such as h1, but does if you nest the contents in a span or div.  This library automatically handles transforming of markup such as
+
+  <h1>foo</h1>
+
+to
+
+  <h1><span style="font-size:x-small">foo</span></h1>
+
+so you don't need to change any styling. If you were doing this manually before and don't want docomo_css to automatically update your html, use
+
+  docomo_css :inject_unsupported_style => false
+
 == Install
 
   sudo gem install docomo_css
 
-libxml 2.7 or later is required
+== Requirements
+
+ * libxml 2.7 or later is required
+ * Rails 3
 
 == Usage
 
