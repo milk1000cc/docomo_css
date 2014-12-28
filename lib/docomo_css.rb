@@ -1,1 +1,1 @@
-require 'docomo_css/railtie'
+require 'docomo_css/filter'

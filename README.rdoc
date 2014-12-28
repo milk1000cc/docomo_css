@@ -23,7 +23,7 @@ to
 
 so you don't need to change any styling. If you were doing this manually before and don't want docomo_css to automatically update your html, use
 
-  docomo_css :inject_unsupported_style => false
+  docomo_css inject_unsupported_style: false
 
 == Install
 
@@ -31,8 +31,7 @@ so you don't need to change any styling. If you were doing this manually before 
 
 == Requirements
 
- * libxml 2.7 or later is required
- * Rails 3 or later
+ * Rails 4
 
 == Usage
 
@@ -45,7 +44,7 @@ so you don't need to change any styling. If you were doing this manually before 
   # app/views/articles/index.html.erb
   <html>
   <head>
-    <%= stylesheet_link_tag 'foo', :media => 'handheld, tty' %>
+    <%= stylesheet_link_tag 'foo', media: 'handheld, tty' %>
   </head>
   <body>
     <div class="title">bar</div>
@@ -59,9 +58,7 @@ so you don't need to change any styling. If you were doing this manually before 
 
   # result
   <html>
-  <head>
-    <%= stylesheet_link_tag 'foo', :media => 'handheld, tty' %>
-  </head>
+  <head></head>
   <body>
     <div class="title" style="color:red">bar</div>
   </body>
@@ -74,8 +71,8 @@ Options for the value of this docomo_css are
 
 == Author
 
-Copyright (c) 2008 milk1000cc, released under the MIT license
+Copyright (c) 2008-2014 milk1000cc & Paul McMahon, released under the MIT license
 
 milk1000cc <mailto:info@milk1000.cc>
 
-Gem and refactorings by Paul McMahon <mailto:paul@mobalean.com>
+Paul McMahon <mailto:paul@mobalean.com>

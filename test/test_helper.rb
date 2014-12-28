@@ -1,5 +1,6 @@
 require 'minitest/autorun'
 require 'mocha/mini_test'
+require 'active_support'
 
 Rails = Mocha::Mockery.instance.unnamed_mock
 Rails.stubs(

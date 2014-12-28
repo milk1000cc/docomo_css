@@ -2,7 +2,6 @@ require 'test_helper'
 require File.join File.dirname(__FILE__), '..', '..', 'lib', 'docomo_css', 'embeddable_style'
 
 class DocomoCss::EmbeddableStyleTest < MiniTest::Test
-
   def test_embed_style_in_div
     doc = Nokogiri::HTML("<div>")
     div = doc.at("div")

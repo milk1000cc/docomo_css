@@ -3,6 +3,12 @@ require 'docomo_css/embeddable_style'
 require 'nokogiri'
 require 'tiny_css'
 
+ActiveSupport.on_load(:action_controller) do
+  def self.docomo_filter(options = {})
+    after_action DocomoCss::Filter.new(options)
+  end
+end
+
 module DocomoCss
   class Filter
     def initialize(options = {})
