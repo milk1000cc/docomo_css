@@ -24,7 +24,7 @@ class DocomoCss::StylesheetTest < MiniTest::Test
 
   def test_asset_css
     css = "div.content { background-color: #999 }"
-    mock_asset 'mobile/application.css', false, css
+    mock_asset 'mobile/application.css', css
 
     href = "/assets/mobile/application.css?body=1"
     stylesheet = DocomoCss::Stylesheet.new(href)
@@ -33,9 +33,18 @@ class DocomoCss::StylesheetTest < MiniTest::Test
 
   def test_asset_css_without_body_param
     css = "div.content { background-color: #999 }"
-    mock_asset 'mobile/application.css', true, css
+    mock_asset 'mobile/application.css', css, bundle: true
 
     href = "/assets/mobile/application.css"
+    stylesheet = DocomoCss::Stylesheet.new(href)
+    assert_equal css, stylesheet.asset_css
+  end
+
+  def test_asset_css_with_digest
+    css = "div.content { background-color: #999 }"
+    mock_asset 'mobile/application.css', css, digest: true
+
+    href = "/assets/mobile/application-c692ad4e67b1dc0d0ce.css?body=1"
     stylesheet = DocomoCss::Stylesheet.new(href)
     assert_equal css, stylesheet.asset_css
   end

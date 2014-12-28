@@ -233,7 +233,7 @@ a:visited { color: blue; }
 
   def test_asset_pipeline
     css = open(File.expand_path('../public/actual.css', __dir__)) { |f| f.read }
-    mock_asset 'actual.css', false, css
+    mock_asset 'actual.css', css
 
     request = stub('request', :user_agent => 'DoCoMo/2.0 D905i(c100;TB;W24H17)')
     response = stub("response") do

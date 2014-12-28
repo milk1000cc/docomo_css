@@ -18,6 +18,10 @@ module DocomoCss
       path = path.sub(/^#{ Rails.application.config.assets.prefix }/, '').
                   sub(/^\//, '')
 
+      if Rails.application.config.assets.digest
+        path = path.sub(/(.+)\-\w+(.+)/, '\1\2')
+      end
+
       asset = Rails.application.assets.
         find_asset(path, :bundle => !body_only?(query))
       asset ? asset.to_s : nil
